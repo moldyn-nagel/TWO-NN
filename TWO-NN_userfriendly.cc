@@ -56,9 +56,10 @@ void find_nearest_coo(vector<double>& D1,vector<double>& D2, vector<double>& X, 
 				for(int cc=0; cc<ncoords; cc++){
 					Xtemp[cc]=X.at(i*ncoords+cc)-X.at(j*ncoords+cc);
 					if(periodicB){
-						if(abs(Xtemp[cc])>L[cc]*0.5) 
+						if(abs(Xtemp[cc])>L[cc]*0.5){
 							if(X.at(i*ncoords+cc)>X.at(j*ncoords+cc)) Xtemp[cc]=L[cc]-Xtemp[cc];
 							else Xtemp[cc]=L[cc]+Xtemp[cc];
+					    }
 					}
 					dist+=Xtemp[cc]*Xtemp[cc];
 				}
@@ -171,14 +172,13 @@ void compute_d(vector<double>& D1, vector<double>& D2, double& dim, int N, doubl
 		YY[i]=log(1.-double(i)/double(N));
 	}
 
-	double sumX, sumY, sumXY, sumX2, sumY2, sumErr;
+	double sumX, sumY, sumXY, sumX2, sumY2;
 
 	sumX=0.;
 	sumY=0.;
 	sumXY=0.;
 	sumX2=0.;
 	sumY2=0.;
-	sumErr=0.;
  
 
 	int Ncut=int(double(N)*frac);
@@ -199,7 +199,7 @@ void compute_d(vector<double>& D1, vector<double>& D2, double& dim, int N, doubl
   
 	dim=-sumXY/sumX2;  //fit formula with the straight line through the origin a*x
 
-	double minval=sqrt(sumY2-sumXY*sumXY/sumX2)/double(Ncut);
+//	double minval=sqrt(sumY2-sumXY*sumXY/sumX2)/double(Ncut);
 
 	if (nbox==1) cout<< "estimated dimension= "<<dim<<' '<<endl;
 
@@ -308,7 +308,7 @@ int main(int argc, char* argv[])
 	};
 
 	ifstream file_in_1(file_in.c_str());
-	double MAXdist;
+//	double MAXdist;
 
 	long int Ntemp=0;
 	vector<double> Dist;
@@ -374,7 +374,7 @@ int main(int argc, char* argv[])
 		cout << "xx=" << xx << ", yy=" << yy << ", TriangSup=" << TriangSup << endl;
 		cout << "Ntemp=" << Ntemp << endl;  
 
-		MAXdist=*max_element(Dist.begin(),Dist.end());
+//		MAXdist=*max_element(Dist.begin(),Dist.end());
 		N=(int)((1.+sqrt(1.+8.*Ntemp))*0.5); //Number of points in the dataset
 	}
 
@@ -418,8 +418,6 @@ int main(int argc, char* argv[])
 
 		int nbox=NBOX[i];
 		int Npoints=N/nbox;
-		double ave_temp=0;
-		double var_temp=0;
 		cout<<"nbox"<<' '<<nbox<<endl;
 		cout<<endl;
 
